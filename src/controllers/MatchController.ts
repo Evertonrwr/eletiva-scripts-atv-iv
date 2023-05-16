@@ -40,7 +40,7 @@ class MatchController{
         return res.json(matches)
     }
     public async create(req: Request, res: Response): Promise<Response> {
-        const {idhost, idvisitor} = req.body
+        const {idhost, idvisitor, date} = req.body
         
         const host = await AppDataSource.getRepository(Team).findOneBy({id:idhost})
        
@@ -49,6 +49,7 @@ class MatchController{
         const match = new Match()
         match.host = host
         match.visitor = visitor
+        match.date = date
 
         const newMatch = await AppDataSource.getRepository(Match).save(match)
 
