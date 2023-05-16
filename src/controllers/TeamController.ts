@@ -74,7 +74,16 @@ class TeamController {
         console.log(name)
         const team = await AppDataSource.getRepository(Team).findOneBy({id:id})
         team.name = name
-        const teams = await AppDataSource.getRepository(Team).save(team)
+        const teams = await AppDataSource.getRepository(Team).save(team).catch((e)=>{
+            if ( e.errno) {
+                if ( e.errno == 19) {
+                    return { error: 'Nome já existe' };
+                }else{
+                    return { error: 'Erro' };
+
+                }
+            }
+        })
 
         return res.json({ teams })
     }
